@@ -1,6 +1,6 @@
 # hyprland pimp-module
 
-[PimpMyRice](https://github.com/daddodev/pimpmyrice) module for [hyprland](https://hyprland.org).
+[PimpMyRice](https://github.com/daddodev/pimpmyrice) module for [Hyprland](https://hyprland.org).
 
 ## Set up
 
