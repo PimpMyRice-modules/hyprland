@@ -1,0 +1,3 @@
+os: linux
+run:
+  - file: "{{config_dir}}/hypr/pimp.conf"
