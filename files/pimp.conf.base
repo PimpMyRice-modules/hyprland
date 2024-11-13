@@ -3,8 +3,8 @@ general {
     gaps_in = {{gaps.inner}}
     gaps_out = {{gaps.outer}}
     border_size = {{border.width}}
-    col.active_border = 0xff{{border.active.nohash}}
-    col.inactive_border = 0xff{{border.inactive.nohash}}
+    col.active_border = rgb({{border.active.nohash}})
+    col.inactive_border = rgb({{border.inactive.nohash}})
 }
 
 decoration {
@@ -28,7 +28,6 @@ decoration {
     col.shadow = rgba(000000{{(shadow.opacity * 100) | int}})
 }
 
-
 animations {
     enabled = {{"yes" if animations.enabled else "no"}}
 
@@ -42,5 +41,51 @@ animations {
     animation = fade, 1, 2, default
     animation = workspaces, 1, 2, default
 }
+
+plugin {
+    hyprbars {
+        bar_height = {{font.size + padding.v if titlebar.enabled else 0 }}
+        bar_text_font = {{font.normal}}
+        bar_text_size = {{font.size}}
+        bar_color = rgb({{border.inactive.nohash}})
+        col.text = rgb({{normal.fg.nohash}})
+
+        bar_padding = {{border.width + (border.radius//2)}}
+        bar_button_padding = 10
+
+        bar_part_of_window = true
+        bar_precedence_over_border = true
+
+        bar_title_enabled = true
+
+        bar_text_align = center
+        bar_buttons_alignment = right
+
+        hyprbars-button = rgb(ff4040), {{font.size + 5}}, , hyprctl dispatch killactive
+        hyprbars-button = rgb(eeee11), {{font.size + 5}}, , hyprctl dispatch fullscreen 1
+    }
+
+    borders-plus-plus {
+        add_borders = 1 # 0 - 9
+
+        # you can add up to 9 borders
+        col.border_1 = rgb({{border.inactive.nohash}})
+
+        # -1 means "default" as in the one defined in general:border_size
+        border_size_1 = -1
+
+        natural_rounding = no
+    }
+}
+
+windowrulev2 = plugin:hyprbars:bar_color rgb({{border.active.nohash}}), focus:1
+windowrulev2 = plugin:hyprbars:title_color rgb({{primary.fg.nohash}}), focus:1
+
+
+{% if gaps.outer == 0 %}
+windowrulev2 = bordersize 0, onworkspace:w[t1]
+windowrulev2 = bordercolor rgb(2b3229), onworkspace:w[t1]
+{% endif %}
+
 
 exec-once=hyprctl setcursor Adwaita 24
