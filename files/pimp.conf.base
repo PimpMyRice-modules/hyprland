@@ -1,5 +1,4 @@
 general {
-
     gaps_in = {{gaps.inner}}
     gaps_out = {{gaps.outer}}
     border_size = {{border.width}}
@@ -22,10 +21,10 @@ decoration {
     }
 
     drop_shadow = {{"yes" if shadow.enabled else "no"}}
-    shadow_range = {{shadow.radius}}
+    shadow_range = {{shadow.spread + shadow.blur}}
     shadow_offset = {{shadow.offset}} {{shadow.offset}}
     shadow_render_power = 1
-    col.shadow = rgba(000000{{(shadow.opacity * 100) | int}})
+    col.shadow = rgba(0, 0, 0, {{shadow.opacity}})
 }
 
 animations {
