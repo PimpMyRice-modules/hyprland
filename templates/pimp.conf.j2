@@ -60,8 +60,9 @@ plugin {
         bar_text_align = center
         bar_buttons_alignment = right
 
-        hyprbars-button = rgb(ff4040), {{font.size + 5}}, , hyprctl dispatch killactive
-        hyprbars-button = rgb(eeee11), {{font.size + 5}}, , hyprctl dispatch fullscreen 1
+        hyprbars-button = rgb({{accent.bg.nohash}}), {{font.size + 5}}, , hyprctl dispatch killactive
+        hyprbars-button = rgb({{secondary.bg.alt.nohash}}), {{font.size + 5}}, , hyprctl dispatch fullscreen 1
+        hyprbars-button = rgb({{secondary.bg.nohash}}), {{font.size + 5}}, , hyprctl dispatch togglefloating
     }
 
     borders-plus-plus {
