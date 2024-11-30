@@ -1,3 +1,7 @@
-os: linux
+# yaml-language-server: $schema=../../.json_schemas/module.json
+
+os:
+  - linux
 run:
-  - file: "{{config_dir}}/hypr/pimp.conf"
+  - action: file
+    target: "{{config_dir}}/hypr/pimp.conf"
