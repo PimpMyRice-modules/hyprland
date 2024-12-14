@@ -19,37 +19,39 @@ decoration {
         ignore_opacity = true
         new_optimizations = true
     }
-
-    drop_shadow = {{"yes" if shadow.enabled else "no"}}
-    shadow_range = {{shadow.spread + shadow.blur}}
-    shadow_offset = {{shadow.offset}} {{shadow.offset}}
-    shadow_render_power = 1
-    col.shadow = rgba(0, 0, 0, {{shadow.opacity}})
+    shadow {
+        enabled = {{"true" if shadow.enabled else "false"}}
+        range = {{shadow.spread + shadow.blur}}
+        offset = {{shadow.offset}} {{shadow.offset}}
+        render_power = 3
+        color = rgba({{shadow.color}}, {{shadow.opacity}})
+    }
 }
+
 
 animations {
     enabled = {{"yes" if animations.enabled else "no"}}
 
     # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
-    bezier = myBezier, 0.05, 0.9, 1, 1.05
+    bezier = overshot, 0.05, 0.9, 0.1, 1.2
 
-    animation = windows, 1, 2, default
-    animation = windowsOut, 1, 2, default
-    animation = border, 1, 3, default
-    animation = fade, 1, 2, default
-    animation = workspaces, 1, 2, default
+    animation = windows, 1, {{animations.speed}}, {{animations.style}}
+    animation = windowsOut, 1, {{animations.speed}}, {{animations.style}}
+    animation = border, 1, {{animations.speed}}, {{animations.style}}
+    animation = fade, 1, {{animations.speed}}, {{animations.style}}
+    animation = workspaces, 1, {{animations.speed}}, {{animations.style}}
 }
 
 plugin {
     hyprbars {
-        bar_height = {{font.size + padding.y if titlebar.enabled else 0 }}
-        bar_text_font = {{font.normal}}
-        bar_text_size = {{font.size}}
+        bar_height = {{font.normal.size + padding.y if titlebar.enabled else 0 }}
+        bar_text_font = {{font.normal.family}}
+        bar_text_size = {{font.normal.size-3}}
         bar_color = rgb({{border.inactive.nohash}})
         col.text = rgb({{normal.fg.nohash}})
 
-        bar_padding = {{border.width + (border.radius//2)}}
+        bar_padding = {{border.width + (border.radius * 0.67) | int}}
         bar_button_padding = 10
 
         bar_part_of_window = true
@@ -60,19 +62,20 @@ plugin {
         bar_text_align = center
         bar_buttons_alignment = right
 
-        hyprbars-button = rgb({{accent.bg.nohash}}), {{font.size + 5}}, , hyprctl dispatch killactive
-        hyprbars-button = rgb({{secondary.bg.alt.nohash}}), {{font.size + 5}}, , hyprctl dispatch fullscreen 1
-        hyprbars-button = rgb({{secondary.bg.nohash}}), {{font.size + 5}}, , hyprctl dispatch togglefloating
+        hyprbars-button = rgb({{accent.bg.nohash}}), {{font.normal.size + 5}}, , hyprctl dispatch killactive
+        hyprbars-button = rgb({{secondary.bg.alt.nohash}}), {{font.normal.size + 5}}, , hyprctl dispatch fullscreen 0
+        hyprbars-button = rgb({{secondary.bg.nohash}}), {{font.normal.size + 5}}, , hyprctl dispatch togglefloating
     }
 
     borders-plus-plus {
-        add_borders = 1 # 0 - 9
+        add_borders = {{ 1 if border_2.enabled else 0 }} # 0 - 9
 
+        
         # you can add up to 9 borders
-        col.border_1 = rgb({{border.inactive.nohash}})
+        col.border_1 = rgb({{border_2.color.nohash}})
 
         # -1 means "default" as in the one defined in general:border_size
-        border_size_1 = -1
+        border_size_1 = {{border_2.width}}
 
         natural_rounding = no
     }
@@ -81,11 +84,16 @@ plugin {
 windowrulev2 = plugin:hyprbars:bar_color rgb({{border.active.nohash}}), focus:1
 windowrulev2 = plugin:hyprbars:title_color rgb({{primary.fg.nohash}}), focus:1
 
-
 {% if gaps.outer == 0 %}
 windowrulev2 = bordersize 0, onworkspace:w[t1]
 windowrulev2 = bordercolor rgb(2b3229), onworkspace:w[t1]
 {% endif %}
 
 
-exec-once=hyprctl setcursor Adwaita 24
+{% if blur_bg %}
+layerrule = blur, waybar
+layerrule = blur, rofi
+{% endif %}
+
+
+exec-once=hyprctl setcursor {{cursor.name}} {{cursor.size}}
